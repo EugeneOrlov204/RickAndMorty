@@ -50,7 +50,12 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 
     // Dagger
-    def dagger_version = "2.35.1"
+    def dagger_version = "2.38.1"
     implementation "com.google.dagger:dagger:$dagger_version"
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
+
+    //Navigation Component
+    def nav_version = "2.3.5"
+    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 }
