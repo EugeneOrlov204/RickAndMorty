@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">RickAndMorty</string>
+    <string name="internet_error">Internet error! Check your Internet connection!</string>
+    <string name="unexpected_response">Something went wrong: unexpected response!</string>
+    <string name="not_successful_response">Response is not successful</string>
+    <string name="initialize_data_error">Inititalize data error!</string>
 </resources>

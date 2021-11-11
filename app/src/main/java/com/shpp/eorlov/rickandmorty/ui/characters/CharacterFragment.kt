@@ -14,9 +14,14 @@ import com.shpp.eorlov.rickandmorty.ui.MainActivity
 import javax.inject.Inject
 
 import android.util.TypedValue
+import android.widget.GridLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.Toast
+import androidx.core.view.isVisible
 import com.shpp.eorlov.rickandmorty.R
+import com.shpp.eorlov.rickandmorty.model.CharactersList
+import com.shpp.eorlov.rickandmorty.utils.Results
 
 
 class CharacterFragment : BaseFragment() {
@@ -48,6 +53,7 @@ class CharacterFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setListeners()
+        setObservers()
     }
 
     override fun onResume() {
@@ -55,21 +61,76 @@ class CharacterFragment : BaseFragment() {
         printLog("On resume")
     }
 
-    private fun addItem() {
-        val btn7 = ImageView(context)
-        btn7.setImageResource(R.drawable.rick_and_morty)
-        btn7.scaleType = ImageView.ScaleType.FIT_XY
+    private fun setObservers() {
+        viewModel.charactersListLiveData.observe(viewLifecycleOwner) {
+            addItem(it)
+        }
+
+        viewModel.loadEventLiveData.observe(viewLifecycleOwner) { event ->
+            when (event) {
+                Results.OK -> {
+                    unlockUI()
+                    binding.contentLoadingProgressBar.isVisible = false
+                }
+                Results.LOADING -> {
+                    lockUI()
+                    binding.contentLoadingProgressBar.isVisible = true
+                }
+                Results.INITIALIZE_DATA_ERROR -> {
+                    unlockUI()
+                    binding.contentLoadingProgressBar.isVisible = false
+                    Toast.makeText(
+                        requireContext(),
+                        R.string.initialize_data_error,
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+                Results.INTERNET_ERROR -> {
+                    Toast.makeText(
+                        requireContext(),
+                        getString(R.string.internet_error),
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+                Results.UNEXPECTED_RESPONSE -> {
+                    Toast.makeText(
+                        requireContext(),
+                        getString(R.string.unexpected_response),
+                        Toast.LENGTH_LONG
+                    ).show()
+                    unlockUI()
+                    binding.contentLoadingProgressBar.isVisible = false
+                }
+                Results.NOT_SUCCESSFUL_RESPONSE -> {
+                    Toast.makeText(
+                        requireContext(),
+                        getString(R.string.not_successful_response),
+                        Toast.LENGTH_LONG
+                    ).show()
+                    unlockUI()
+                    binding.contentLoadingProgressBar.isVisible = false
+                }
+                else -> {
+                }
+            }
+        }
+    }
+
+    private fun addItem(charactersList: CharactersList) {
+        val gridLayout = GridLayout(context)
+        val imageView = ImageView(context)
+        imageView.setImageResource(R.drawable.rick_and_morty)
+        imageView.scaleType = ImageView.ScaleType.FIT_XY
         val width = convertPxToDp(150f).toInt()
         val height = convertPxToDp(150f).toInt()
         val parms = LinearLayout.LayoutParams(width, height)
-        btn7.layoutParams = parms
-        binding.gridLayoutCharacters.addView(btn7)
+        imageView.layoutParams = parms
+        gridLayout.addView(imageView)
+        binding.constraintLayoutCharacters.addView(gridLayout)
     }
 
     private fun setListeners() {
-        binding.gridLayoutCharacters.setOnClickListener {
-            addItem()
-        }
+
     }
 
     private fun convertPxToDp(dip: Float): Float {
