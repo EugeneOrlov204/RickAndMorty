@@ -1,6 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <data>
+
+        <variable
+            name="character"
+            type="com.shpp.eorlov.rickandmorty.model.CharacterModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#3F51B5">
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/simpleDraweeViewCharacterImage"
+            android:layout_width="@dimen/simpleDraweeViewImageSize"
+            android:layout_height="@dimen/simpleDraweeViewImageSize"
+            android:layout_margin="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:placeholderImageScaleType="fitXY"
+            fresco:placeholderImage="@drawable/default_item_image"
+            tools:placeholderImage="@drawable/default_item_image" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textViewName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="80dp"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginBottom="20dp"
+            android:text='@{"Name: " + character.name}'
+            android:textColor="#FFC841"
+            android:textSize="@dimen/textViewDetailsTextSize"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/simpleDraweeViewCharacterImage"
+            tools:text="Name: Eugene" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textViewSpecies"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:text='@{"Species: " + character.species}'
+            android:textColor="#FFC841"
+            android:textSize="@dimen/textViewDetailsTextSize"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textViewName"
+            tools:text="Species: Human" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textViewGender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:text='@{"Gender: " + character.gender}'
+            android:textColor="#FFC841"
+            android:textSize="@dimen/textViewDetailsTextSize"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textViewSpecies"
+            tools:text="Gender: Male" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textViewLocation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:text='@{"Location: " + character.location}'
+            android:textColor="#FFC841"
+            android:textSize="@dimen/textViewDetailsTextSize"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textViewGender"
+            tools:text="Location: Citadel of Ricks" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textViewOrigin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:text='@{"Origin: " + character.origin}'
+            android:textColor="#FFC841"
+            android:textSize="@dimen/textViewDetailsTextSize"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textViewLocation"
+            tools:text="Origin: Earth" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textViewStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:text='@{"Status: " + character.status}'
+            android:textColor="#FFC841"
+            android:textSize="@dimen/textViewDetailsTextSize"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textViewOrigin"
+            tools:text="Status: Male" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
