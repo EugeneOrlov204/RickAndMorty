@@ -13,14 +13,15 @@ import javax.inject.Inject
 
 class CharacterViewModel @Inject constructor(
     private val client: RestClient
-) : ViewModel()  {
+) : ViewModel() {
     val charactersListLiveData = MutableLiveData<CharactersList>()
     val loadEventLiveData = MutableLiveData<Results>()
+
     init {
         getAllCharacters()
     }
 
-   private fun getAllCharacters()  {
+    private fun getAllCharacters() {
         viewModelScope.launch {
             loadEventLiveData.postValue(Results.LOADING)
             val response = try {

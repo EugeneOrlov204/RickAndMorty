@@ -117,6 +117,8 @@ class CharacterFragment : BaseFragment() {
     }
 
     private fun addItem(charactersList: CharactersList) {
+        println(charactersList)
+
         val gridLayout = GridLayout(context)
         val imageView = ImageView(context)
         imageView.setImageResource(R.drawable.rick_and_morty)
@@ -130,7 +132,6 @@ class CharacterFragment : BaseFragment() {
     }
 
     private fun setListeners() {
-
     }
 
     private fun convertPxToDp(dip: Float): Float {
