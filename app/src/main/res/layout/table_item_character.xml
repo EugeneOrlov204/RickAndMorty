@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayoutCharacterItem"
+        android:layout_width="150dp"
+        android:layout_height="180dp"
+        android:layout_margin="10dp"
+        android:background="#CACACA">
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/simpleDraweeViewCharacterImage"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:layout_margin="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            fresco:placeholderImage="@drawable/default_item_image"
+            tools:placeholderImage="@drawable/default_item_image" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textViewName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:gravity="center"
+            app:layout_constraintEnd_toEndOf="@id/simpleDraweeViewCharacterImage"
+            app:layout_constraintStart_toStartOf="@id/simpleDraweeViewCharacterImage"
+            app:layout_constraintTop_toBottomOf="@id/simpleDraweeViewCharacterImage"
+            tools:text="Eugene Krabs" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textViewSpecies"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:gravity="center"
+            app:layout_constraintEnd_toEndOf="@id/simpleDraweeViewCharacterImage"
+            app:layout_constraintStart_toStartOf="@id/simpleDraweeViewCharacterImage"
+            app:layout_constraintTop_toBottomOf="@id/textViewName"
+            tools:text="Crab" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

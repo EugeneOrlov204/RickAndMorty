@@ -14,13 +14,11 @@ import com.shpp.eorlov.rickandmorty.ui.MainActivity
 import javax.inject.Inject
 
 import android.util.TypedValue
-import android.widget.GridLayout
-import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.core.view.isVisible
+import androidx.recyclerview.widget.GridLayoutManager
 import com.shpp.eorlov.rickandmorty.R
-import com.shpp.eorlov.rickandmorty.model.CharactersList
+import com.shpp.eorlov.rickandmorty.ui.characters.adapter.CharactersGridAdapter
 import com.shpp.eorlov.rickandmorty.utils.Results
 
 
@@ -28,6 +26,10 @@ class CharacterFragment : BaseFragment() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    private val charactersGridAdapter: CharactersGridAdapter by lazy(LazyThreadSafetyMode.NONE) {
+        CharactersGridAdapter()
+    }
 
     private lateinit var viewModel: CharacterViewModel
     private lateinit var binding: FragmentCharacterBinding
@@ -54,8 +56,7 @@ class CharacterFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         setListeners()
         setObservers()
-        gridLayout = GridLayout(context)
-        binding.constraintLayoutCharacters.addView(gridLayout)
+        initRecycler()
     }
 
     override fun onResume() {
@@ -63,12 +64,26 @@ class CharacterFragment : BaseFragment() {
         printLog("On resume")
     }
 
+    private fun initRecycler() {
+        binding.recyclerViewMyContacts.apply {
+            layoutManager = GridLayoutManager(
+                requireContext(),
+                2
+            )
+
+            adapter = charactersGridAdapter
+        }
+    }
+
     private fun setObservers() {
-        viewModel.charactersListLiveData.observe(viewLifecycleOwner) {
-            addItem(it)
+        viewModel.charactersFromCurrentPageLiveData.observe(viewLifecycleOwner) {
             if(it.info?.next != null) {
                 viewModel.getAllCharacters()
             }
+        }
+
+        viewModel.charactersListLiveData.observe(viewLifecycleOwner) {
+            charactersGridAdapter.submitList(it.toMutableList())
         }
 
         viewModel.loadEventLiveData.observe(viewLifecycleOwner) { event ->
@@ -122,19 +137,9 @@ class CharacterFragment : BaseFragment() {
             }
         }
     }
-    private lateinit var gridLayout : GridLayout
-    private fun addItem(charactersList: CharactersList) {
-        val imageView = ImageView(context)
-        imageView.setImageResource(R.drawable.rick_and_morty)
-        imageView.scaleType = ImageView.ScaleType.FIT_XY
-        val width = convertPxToDp(150f).toInt()
-        val height = convertPxToDp(150f).toInt()
-        val parms = LinearLayout.LayoutParams(width, height)
-        imageView.layoutParams = parms
-        gridLayout.addView(imageView)
-    }
 
     private fun setListeners() {
+
     }
 
     private fun convertPxToDp(dip: Float): Float {

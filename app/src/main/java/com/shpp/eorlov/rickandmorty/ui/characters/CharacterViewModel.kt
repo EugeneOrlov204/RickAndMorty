@@ -3,9 +3,9 @@ package com.shpp.eorlov.rickandmorty.ui.characters
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.shpp.eorlov.rickandmorty.model.CharacterModel
 import kotlinx.coroutines.launch
-import com.shpp.eorlov.rickandmorty.model.CharactersList
-import com.shpp.eorlov.rickandmorty.model.GetAllCharactersRequestModel
+import com.shpp.eorlov.rickandmorty.model.CharactersListModel
 import com.shpp.eorlov.rickandmorty.retrofit.RestClient
 import com.shpp.eorlov.rickandmorty.utils.Results
 import retrofit2.HttpException
@@ -15,7 +15,8 @@ import javax.inject.Inject
 class CharacterViewModel @Inject constructor(
     private val client: RestClient
 ) : ViewModel() {
-    val charactersListLiveData = MutableLiveData<CharactersList>()
+    val charactersFromCurrentPageLiveData = MutableLiveData<CharactersListModel>()
+    val charactersListLiveData = MutableLiveData<MutableList<CharacterModel>>(ArrayList())
     val loadEventLiveData = MutableLiveData<Results>()
 
     private var currentPage = 1;
@@ -25,6 +26,7 @@ class CharacterViewModel @Inject constructor(
 
     fun getAllCharacters() {
         viewModelScope.launch {
+            val currentList = charactersListLiveData.value
             loadEventLiveData.postValue(Results.LOADING)
             val response = try {
                 client.getInstance()?.getAllCharacters(currentPage++)
@@ -36,7 +38,11 @@ class CharacterViewModel @Inject constructor(
                 return@launch
             }
             if (response?.isSuccessful == true && response.body() != null) {
-                charactersListLiveData.postValue(response.body()!!)
+                val responseBody = response.body()!!
+                currentList?.addAll(responseBody.results)
+
+                charactersListLiveData.postValue(currentList!!)
+                charactersFromCurrentPageLiveData.postValue(responseBody)
                 loadEventLiveData.postValue(Results.OK)
             } else {
                 loadEventLiveData.postValue(Results.NOT_SUCCESSFUL_RESPONSE)

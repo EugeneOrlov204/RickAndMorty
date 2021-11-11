@@ -1,6 +1,6 @@
 package com.shpp.eorlov.rickandmorty.model
 
-data class Character(
+data class CharacterModel(
     val created: String,
     val episode: List<String>,
     val gender: String,

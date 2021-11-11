@@ -17,12 +17,13 @@ package com.shpp.eorlov.rickandmorty
 
 import com.shpp.eorlov.rickandmorty.di.AppComponent
 import android.app.Application
+import com.facebook.drawee.backends.pipeline.Fresco
 import com.shpp.eorlov.rickandmorty.di.DaggerAppComponent
 
 open class App : Application() {
     override fun onCreate() {
         super.onCreate()
-
+        Fresco.initialize(this);
     }
 
     // Instance of the AppComponent that will be used by all the Activities in the project
