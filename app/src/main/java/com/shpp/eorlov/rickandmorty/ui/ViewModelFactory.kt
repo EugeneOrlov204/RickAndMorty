@@ -2,6 +2,8 @@ package com.shpp.eorlov.rickandmorty.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.shpp.eorlov.rickandmorty.ui.characters.CharacterViewModel
+import com.shpp.eorlov.rickandmorty.ui.start.StartViewModel
 //import com.shpp.eorlov.assignment1.ui.details.DetailViewViewModel
 //import com.shpp.eorlov.assignment1.ui.dialogfragment.ContactDialogViewModel
 //import com.shpp.eorlov.assignment1.ui.editprofile.EditProfileViewModel
@@ -46,15 +48,15 @@ abstract class ViewModelModule {
     @Binds
     internal abstract fun bindViewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory
 
-//    @Binds
-//    @IntoMap
-//    @ViewModelKey(MyContactsViewModel::class)
-//    internal abstract fun contactsViewModel(viewModel: MyContactsViewModel): ViewModel
-//
-//    @Binds
-//    @IntoMap
-//    @ViewModelKey(ContactDialogViewModel::class)
-//    internal abstract fun contactDialogViewModel(viewModel: ContactDialogViewModel): ViewModel
+    @Binds
+    @IntoMap
+    @ViewModelKey(StartViewModel::class)
+    internal abstract fun startViewModel(viewModel: StartViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(CharacterViewModel::class)
+    internal abstract fun contactDialogViewModel(viewModel: CharacterViewModel): ViewModel
 //
 //    @Binds
 //    @IntoMap
