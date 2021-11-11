@@ -17,6 +17,7 @@ package com.shpp.eorlov.rickandmorty.di
 
 import com.shpp.eorlov.rickandmorty.ui.MainActivity
 import com.shpp.eorlov.rickandmorty.ui.characters.CharacterFragment
+import com.shpp.eorlov.rickandmorty.ui.details.DetailFragment
 import com.shpp.eorlov.rickandmorty.ui.start.StartFragment
 import dagger.Subcomponent
 
@@ -27,7 +28,6 @@ import dagger.Subcomponent
 @Subcomponent
 interface ContactComponent {
 
-    // Factory to create instances of RegistrationComponent
     @Subcomponent.Factory
     interface Factory {
         fun create(): ContactComponent
@@ -37,4 +37,5 @@ interface ContactComponent {
     fun inject(activity: MainActivity)
     fun inject(fragment: CharacterFragment)
     fun inject(fragment: StartFragment)
+    fun inject(fragment: DetailFragment)
 }
