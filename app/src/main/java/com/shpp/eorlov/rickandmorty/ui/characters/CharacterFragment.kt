@@ -54,6 +54,8 @@ class CharacterFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         setListeners()
         setObservers()
+        gridLayout = GridLayout(context)
+        binding.constraintLayoutCharacters.addView(gridLayout)
     }
 
     override fun onResume() {
@@ -64,6 +66,9 @@ class CharacterFragment : BaseFragment() {
     private fun setObservers() {
         viewModel.charactersListLiveData.observe(viewLifecycleOwner) {
             addItem(it)
+            if(it.info?.next != null) {
+                viewModel.getAllCharacters()
+            }
         }
 
         viewModel.loadEventLiveData.observe(viewLifecycleOwner) { event ->
@@ -91,6 +96,8 @@ class CharacterFragment : BaseFragment() {
                         getString(R.string.internet_error),
                         Toast.LENGTH_LONG
                     ).show()
+                    unlockUI()
+                    binding.contentLoadingProgressBar.isVisible = false
                 }
                 Results.UNEXPECTED_RESPONSE -> {
                     Toast.makeText(
@@ -115,11 +122,8 @@ class CharacterFragment : BaseFragment() {
             }
         }
     }
-
+    private lateinit var gridLayout : GridLayout
     private fun addItem(charactersList: CharactersList) {
-        println(charactersList)
-
-        val gridLayout = GridLayout(context)
         val imageView = ImageView(context)
         imageView.setImageResource(R.drawable.rick_and_morty)
         imageView.scaleType = ImageView.ScaleType.FIT_XY
@@ -128,7 +132,6 @@ class CharacterFragment : BaseFragment() {
         val parms = LinearLayout.LayoutParams(width, height)
         imageView.layoutParams = parms
         gridLayout.addView(imageView)
-        binding.constraintLayoutCharacters.addView(gridLayout)
     }
 
     private fun setListeners() {

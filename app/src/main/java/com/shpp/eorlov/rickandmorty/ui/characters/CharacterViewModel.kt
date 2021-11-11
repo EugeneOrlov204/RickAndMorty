@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import com.shpp.eorlov.rickandmorty.model.CharactersList
+import com.shpp.eorlov.rickandmorty.model.GetAllCharactersRequestModel
 import com.shpp.eorlov.rickandmorty.retrofit.RestClient
 import com.shpp.eorlov.rickandmorty.utils.Results
 import retrofit2.HttpException
@@ -17,15 +18,16 @@ class CharacterViewModel @Inject constructor(
     val charactersListLiveData = MutableLiveData<CharactersList>()
     val loadEventLiveData = MutableLiveData<Results>()
 
+    private var currentPage = 1;
     init {
         getAllCharacters()
     }
 
-    private fun getAllCharacters() {
+    fun getAllCharacters() {
         viewModelScope.launch {
             loadEventLiveData.postValue(Results.LOADING)
             val response = try {
-                client.getInstance()?.getAllCharacters()
+                client.getInstance()?.getAllCharacters(currentPage++)
             } catch (exception: IOException) {
                 loadEventLiveData.postValue(Results.INTERNET_ERROR)
                 return@launch
