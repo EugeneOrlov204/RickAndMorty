@@ -16,6 +16,8 @@
 package com.shpp.eorlov.rickandmorty.di
 
 import com.shpp.eorlov.rickandmorty.ui.MainActivity
+import com.shpp.eorlov.rickandmorty.ui.characters.CharacterFragment
+import com.shpp.eorlov.rickandmorty.ui.start.StartFragment
 import dagger.Subcomponent
 
 // Scope annotation that the ContactComponent uses
@@ -32,13 +34,7 @@ interface ContactComponent {
     }
 
     // Classes that can be injected by this Component
-//    fun inject(fragment: MyContactsFragment)
-//    fun inject(fragment: DetailViewFragment)
-//    fun inject(dialogFragment: ContactDialogFragment)
     fun inject(activity: MainActivity)
-//    fun inject(fragment: MyProfileFragment)
-//    fun inject(fragment: EditProfileFragment)
-//    fun inject(fragment: SignUpFragment)
-//    fun inject(fragment: SignUpFragmentExtended)
-//    fun inject(fragment: SignInFragment)
+    fun inject(fragment: CharacterFragment)
+    fun inject(fragment: StartFragment)
 }

@@ -4,10 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
     app:startDestination="@id/startFragment">
-
     <fragment
         android:id="@+id/startFragment"
         android:name="com.shpp.eorlov.rickandmorty.ui.start.StartFragment"
-        android:label="fragment_start"
-        tools:layout="@layout/fragment_start" />
+        android:label="StartFragment"
+        tools:layout="@layout/fragment_start">
+        <action
+            android:id="@+id/action_startFragment_to_characterFragment"
+            app:destination="@id/characterFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/characterFragment"
+        android:name="com.shpp.eorlov.rickandmorty.ui.characters.CharacterFragment"
+        android:label="CharacterFragment"
+        tools:layout="@layout/fragment_character"/>
 </navigation>
