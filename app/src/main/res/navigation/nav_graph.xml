@@ -17,5 +17,18 @@
         android:id="@+id/characterFragment"
         android:name="com.shpp.eorlov.rickandmorty.ui.characters.CharacterFragment"
         android:label="CharacterFragment"
-        tools:layout="@layout/fragment_character"/>
+        tools:layout="@layout/fragment_character">
+        <action
+            android:id="@+id/action_characterFragment_to_detailFragment"
+            app:destination="@id/detailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailFragment"
+        android:name="com.shpp.eorlov.rickandmorty.ui.details.DetailFragment"
+        android:label="DetailFragment"
+        tools:layout="@layout/fragment_details">
+        <argument
+            android:name="characterModel"
+            app:argType="com.shpp.eorlov.rickandmorty.model.CharacterModel" />
+    </fragment>
 </navigation>

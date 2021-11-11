@@ -1,34 +1,32 @@
 package com.shpp.eorlov.rickandmorty.ui.characters
 
 import android.content.Context
-import android.content.res.Resources
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModelProvider
-import com.shpp.eorlov.rickandmorty.base.BaseFragment
-import com.shpp.eorlov.rickandmorty.databinding.FragmentCharacterBinding
-import com.shpp.eorlov.rickandmorty.ui.MainActivity
-import javax.inject.Inject
-
-import android.util.TypedValue
+import android.view.*
 import android.widget.Toast
 import androidx.core.view.isVisible
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.shpp.eorlov.rickandmorty.R
+import com.shpp.eorlov.rickandmorty.base.BaseFragment
+import com.shpp.eorlov.rickandmorty.databinding.FragmentCharacterBinding
+import com.shpp.eorlov.rickandmorty.model.CharacterModel
+import com.shpp.eorlov.rickandmorty.ui.MainActivity
 import com.shpp.eorlov.rickandmorty.ui.characters.adapter.CharactersGridAdapter
+import com.shpp.eorlov.rickandmorty.ui.characters.adapter.listeners.CharacterClickListener
 import com.shpp.eorlov.rickandmorty.utils.Results
+import javax.inject.Inject
 
 
-class CharacterFragment : BaseFragment() {
+class CharacterFragment : BaseFragment(), CharacterClickListener {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
     private val charactersGridAdapter: CharactersGridAdapter by lazy(LazyThreadSafetyMode.NONE) {
-        CharactersGridAdapter()
+        CharactersGridAdapter(characterClickListener = this)
     }
 
     private lateinit var viewModel: CharacterViewModel
@@ -54,8 +52,8 @@ class CharacterFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setListeners()
         setObservers()
+        setListeners()
         initRecycler()
     }
 
@@ -63,6 +61,35 @@ class CharacterFragment : BaseFragment() {
         super.onResume()
         printLog("On resume")
     }
+
+    override fun goToDetailView(characterModel: CharacterModel) {
+        val action =
+            CharacterFragmentDirections.actionCharacterFragmentToDetailFragment(characterModel)
+        findNavController().navigate(action)
+    }
+
+    private fun setListeners() {
+        binding.buttonSortCharacters.setOnClickListener {
+            charactersGridAdapter.submitList(getSortedCharacters(charactersGridAdapter.currentList))
+        }
+    }
+
+    private fun getSortedCharacters(currentList: List<CharacterModel>): MutableList<CharacterModel> {
+        val listOfNames: List<String> = currentList.map {
+            it.name
+        }
+
+        val sortedListOfNames = listOfNames.sorted()
+        val sortedListOfCharacters = mutableListOf<CharacterModel>()
+        for (value in sortedListOfNames) {
+            sortedListOfCharacters.add(currentList.first {
+                it.name == value
+            })
+        }
+
+        return sortedListOfCharacters
+    }
+
 
     private fun initRecycler() {
         binding.recyclerViewMyContacts.apply {
@@ -77,7 +104,7 @@ class CharacterFragment : BaseFragment() {
 
     private fun setObservers() {
         viewModel.charactersFromCurrentPageLiveData.observe(viewLifecycleOwner) {
-            if(it.info?.next != null) {
+            if (it.info?.next != null) {
                 viewModel.getAllCharacters()
             }
         }
@@ -89,15 +116,13 @@ class CharacterFragment : BaseFragment() {
         viewModel.loadEventLiveData.observe(viewLifecycleOwner) { event ->
             when (event) {
                 Results.OK -> {
-                    unlockUI()
                     binding.contentLoadingProgressBar.isVisible = false
                 }
                 Results.LOADING -> {
-                    lockUI()
                     binding.contentLoadingProgressBar.isVisible = true
                 }
                 Results.INITIALIZE_DATA_ERROR -> {
-                    unlockUI()
+
                     binding.contentLoadingProgressBar.isVisible = false
                     Toast.makeText(
                         requireContext(),
@@ -111,7 +136,7 @@ class CharacterFragment : BaseFragment() {
                         getString(R.string.internet_error),
                         Toast.LENGTH_LONG
                     ).show()
-                    unlockUI()
+
                     binding.contentLoadingProgressBar.isVisible = false
                 }
                 Results.UNEXPECTED_RESPONSE -> {
@@ -120,7 +145,7 @@ class CharacterFragment : BaseFragment() {
                         getString(R.string.unexpected_response),
                         Toast.LENGTH_LONG
                     ).show()
-                    unlockUI()
+
                     binding.contentLoadingProgressBar.isVisible = false
                 }
                 Results.NOT_SUCCESSFUL_RESPONSE -> {
@@ -129,25 +154,12 @@ class CharacterFragment : BaseFragment() {
                         getString(R.string.not_successful_response),
                         Toast.LENGTH_LONG
                     ).show()
-                    unlockUI()
+
                     binding.contentLoadingProgressBar.isVisible = false
                 }
                 else -> {
                 }
             }
         }
-    }
-
-    private fun setListeners() {
-
-    }
-
-    private fun convertPxToDp(dip: Float): Float {
-        val r: Resources = resources
-        return TypedValue.applyDimension(
-            TypedValue.COMPLEX_UNIT_DIP,
-            dip,
-            r.displayMetrics
-        )
     }
 }

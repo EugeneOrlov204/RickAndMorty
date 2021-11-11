@@ -1,5 +1,9 @@
 package com.shpp.eorlov.rickandmorty.model
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class CharacterModel(
     val created: String,
     val episode: List<String>,
@@ -13,4 +17,4 @@ data class CharacterModel(
     val status: String,
     val type: String,
     val url: String
-)
+) : Parcelable

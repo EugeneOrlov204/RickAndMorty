@@ -18,28 +18,29 @@
 
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/simpleDraweeViewCharacterImage"
-            android:layout_width="@dimen/simpleDraweeViewImageSize"
-            android:layout_height="@dimen/simpleDraweeViewImageSize"
-            android:layout_margin="20dp"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_marginTop="50dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:placeholderImageScaleType="fitXY"
+            app:roundAsCircle="true"
+            android:scaleType="fitXY"
             fresco:placeholderImage="@drawable/default_item_image"
             tools:placeholderImage="@drawable/default_item_image" />
+
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/textViewName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="80dp"
-            android:layout_marginHorizontal="20dp"
-            android:layout_marginBottom="20dp"
+            android:layout_margin="20dp"
             android:text='@{"Name: " + character.name}'
             android:textColor="#FFC841"
             android:textSize="@dimen/textViewDetailsTextSize"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/simpleDraweeViewCharacterImage"
+            app:layout_constraintBottom_toTopOf="@id/textViewSpecies"
             tools:text="Name: Eugene" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -52,6 +53,7 @@
             android:textSize="@dimen/textViewDetailsTextSize"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/textViewName"
+            app:layout_constraintBottom_toTopOf="@id/textViewGender"
             tools:text="Species: Human" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -64,6 +66,7 @@
             android:textSize="@dimen/textViewDetailsTextSize"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/textViewSpecies"
+            app:layout_constraintBottom_toTopOf="@id/textViewLocation"
             tools:text="Gender: Male" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -71,11 +74,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
-            android:text='@{"Location: " + character.location}'
+            android:text='@{"Location: " + character.location.name}'
             android:textColor="#FFC841"
             android:textSize="@dimen/textViewDetailsTextSize"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/textViewGender"
+            app:layout_constraintBottom_toTopOf="@id/textViewOrigin"
             tools:text="Location: Citadel of Ricks" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -83,11 +87,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
-            android:text='@{"Origin: " + character.origin}'
+            android:text='@{"Origin: " + character.origin.name}'
             android:textColor="#FFC841"
             android:textSize="@dimen/textViewDetailsTextSize"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/textViewLocation"
+            app:layout_constraintBottom_toTopOf="@id/textViewStatus"
             tools:text="Origin: Earth" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -95,9 +100,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
+            android:layout_marginStart="20dp"
             android:text='@{"Status: " + character.status}'
             android:textColor="#FFC841"
             android:textSize="@dimen/textViewDetailsTextSize"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/textViewOrigin"
             tools:text="Status: Male" />
