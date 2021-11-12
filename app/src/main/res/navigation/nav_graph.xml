@@ -21,6 +21,9 @@
         <action
             android:id="@+id/action_characterFragment_to_detailFragment"
             app:destination="@id/detailFragment" />
+        <argument
+            android:name="charactersArray"
+            app:argType="com.shpp.eorlov.rickandmorty.model.CharacterModel[]" />
     </fragment>
     <fragment
         android:id="@+id/detailFragment"
