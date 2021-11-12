@@ -5,4 +5,5 @@
     <string name="not_successful_response">Response is not successful</string>
     <string name="initialize_data_error">Inititalize data error!</string>
     <string name="sort_by_name">Sort by name</string>
+    <string name="sorted">Sorted!</string>
 </resources>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="textViewDetailsTextSize">25sp</dimen>
+    <dimen name="textViewDetailsTextSize">20sp</dimen>
     <dimen name="simpleDraweeViewImageSize">130dp</dimen>
 </resources>
