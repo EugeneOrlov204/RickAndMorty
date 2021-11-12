@@ -116,13 +116,15 @@ class CharacterFragment : BaseFragment(), CharacterClickListener {
         viewModel.loadEventLiveData.observe(viewLifecycleOwner) { event ->
             when (event) {
                 Results.OK -> {
+                    binding.buttonSortCharacters.isEnabled = true
                     binding.contentLoadingProgressBar.isVisible = false
                 }
                 Results.LOADING -> {
+                    binding.buttonSortCharacters.isEnabled = false
                     binding.contentLoadingProgressBar.isVisible = true
                 }
                 Results.INITIALIZE_DATA_ERROR -> {
-
+                    binding.buttonSortCharacters.isEnabled = true
                     binding.contentLoadingProgressBar.isVisible = false
                     Toast.makeText(
                         requireContext(),
@@ -131,6 +133,7 @@ class CharacterFragment : BaseFragment(), CharacterClickListener {
                     ).show()
                 }
                 Results.INTERNET_ERROR -> {
+                    binding.buttonSortCharacters.isEnabled = true
                     Toast.makeText(
                         requireContext(),
                         getString(R.string.internet_error),
@@ -140,6 +143,7 @@ class CharacterFragment : BaseFragment(), CharacterClickListener {
                     binding.contentLoadingProgressBar.isVisible = false
                 }
                 Results.UNEXPECTED_RESPONSE -> {
+                    binding.buttonSortCharacters.isEnabled = true
                     Toast.makeText(
                         requireContext(),
                         getString(R.string.unexpected_response),
@@ -149,6 +153,7 @@ class CharacterFragment : BaseFragment(), CharacterClickListener {
                     binding.contentLoadingProgressBar.isVisible = false
                 }
                 Results.NOT_SUCCESSFUL_RESPONSE -> {
+                    binding.buttonSortCharacters.isEnabled = true
                     Toast.makeText(
                         requireContext(),
                         getString(R.string.not_successful_response),
