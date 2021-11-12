@@ -5,16 +5,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.net.toUri
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import com.shpp.eorlov.rickandmorty.R
 import com.shpp.eorlov.rickandmorty.base.BaseFragment
-import com.shpp.eorlov.rickandmorty.databinding.FragmentCharacterBinding
 import com.shpp.eorlov.rickandmorty.databinding.FragmentDetailsBinding
 import com.shpp.eorlov.rickandmorty.ui.MainActivity
-import com.shpp.eorlov.rickandmorty.ui.characters.CharacterViewModel
 
 import javax.inject.Inject
 
@@ -25,16 +22,12 @@ class DetailFragment : BaseFragment() {
 
     private val args: DetailFragmentArgs by navArgs()
 
-    private lateinit var viewModel: CharacterViewModel
     private lateinit var binding: FragmentDetailsBinding
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
         (activity as MainActivity).contactComponent.inject(this)
-
-        viewModel =
-            ViewModelProvider(this, viewModelFactory)[CharacterViewModel::class.java]
     }
 
     override fun onCreateView(

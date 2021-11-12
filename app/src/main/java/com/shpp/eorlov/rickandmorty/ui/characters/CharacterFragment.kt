@@ -3,11 +3,10 @@ package com.shpp.eorlov.rickandmorty.ui.characters
 import android.content.Context
 import android.os.Bundle
 import android.view.*
-import android.widget.Toast
-import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import com.shpp.eorlov.rickandmorty.R
 import com.shpp.eorlov.rickandmorty.base.BaseFragment
@@ -16,7 +15,7 @@ import com.shpp.eorlov.rickandmorty.model.CharacterModel
 import com.shpp.eorlov.rickandmorty.ui.MainActivity
 import com.shpp.eorlov.rickandmorty.ui.characters.adapter.CharactersGridAdapter
 import com.shpp.eorlov.rickandmorty.ui.characters.adapter.listeners.CharacterClickListener
-import com.shpp.eorlov.rickandmorty.utils.Results
+import com.shpp.eorlov.rickandmorty.ui.details.DetailFragmentArgs
 import javax.inject.Inject
 
 
@@ -28,8 +27,9 @@ class CharacterFragment : BaseFragment(), CharacterClickListener {
     private val charactersGridAdapter: CharactersGridAdapter by lazy(LazyThreadSafetyMode.NONE) {
         CharactersGridAdapter(characterClickListener = this)
     }
+    private val args: CharacterFragmentArgs by navArgs()
 
-    private lateinit var viewModel: CharacterViewModel
+    private lateinit var viewModel: CharactersViewModel
     private lateinit var binding: FragmentCharacterBinding
 
     override fun onAttach(context: Context) {
@@ -38,7 +38,7 @@ class CharacterFragment : BaseFragment(), CharacterClickListener {
         (activity as MainActivity).contactComponent.inject(this)
 
         viewModel =
-            ViewModelProvider(this, viewModelFactory)[CharacterViewModel::class.java]
+            ViewModelProvider(this, viewModelFactory)[CharactersViewModel::class.java]
     }
 
     override fun onCreateView(
@@ -52,6 +52,7 @@ class CharacterFragment : BaseFragment(), CharacterClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.setCharactersList(args.charactersArray.toMutableList())
         setObservers()
         setListeners()
         initRecycler()
@@ -70,7 +71,13 @@ class CharacterFragment : BaseFragment(), CharacterClickListener {
 
     private fun setListeners() {
         binding.buttonSortCharacters.setOnClickListener {
-            charactersGridAdapter.submitList(getSortedCharacters(charactersGridAdapter.currentList))
+            val sortedCharacters = getSortedCharacters(charactersGridAdapter.currentList)
+            viewModel.charactersListLiveData.value = sortedCharacters
+
+            binding.buttonSortCharacters.run{
+                setText(R.string.sorted)
+                isEnabled = false
+            }
         }
     }
 
@@ -103,68 +110,8 @@ class CharacterFragment : BaseFragment(), CharacterClickListener {
     }
 
     private fun setObservers() {
-        viewModel.charactersFromCurrentPageLiveData.observe(viewLifecycleOwner) {
-            if (it.info?.next != null) {
-                viewModel.getAllCharacters()
-            }
-        }
-
         viewModel.charactersListLiveData.observe(viewLifecycleOwner) {
             charactersGridAdapter.submitList(it.toMutableList())
-        }
-
-        viewModel.loadEventLiveData.observe(viewLifecycleOwner) { event ->
-            when (event) {
-                Results.OK -> {
-                    binding.buttonSortCharacters.isEnabled = true
-                    binding.contentLoadingProgressBar.isVisible = false
-                }
-                Results.LOADING -> {
-                    binding.buttonSortCharacters.isEnabled = false
-                    binding.contentLoadingProgressBar.isVisible = true
-                }
-                Results.INITIALIZE_DATA_ERROR -> {
-                    binding.buttonSortCharacters.isEnabled = true
-                    binding.contentLoadingProgressBar.isVisible = false
-                    Toast.makeText(
-                        requireContext(),
-                        R.string.initialize_data_error,
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
-                Results.INTERNET_ERROR -> {
-                    binding.buttonSortCharacters.isEnabled = true
-                    Toast.makeText(
-                        requireContext(),
-                        getString(R.string.internet_error),
-                        Toast.LENGTH_LONG
-                    ).show()
-
-                    binding.contentLoadingProgressBar.isVisible = false
-                }
-                Results.UNEXPECTED_RESPONSE -> {
-                    binding.buttonSortCharacters.isEnabled = true
-                    Toast.makeText(
-                        requireContext(),
-                        getString(R.string.unexpected_response),
-                        Toast.LENGTH_LONG
-                    ).show()
-
-                    binding.contentLoadingProgressBar.isVisible = false
-                }
-                Results.NOT_SUCCESSFUL_RESPONSE -> {
-                    binding.buttonSortCharacters.isEnabled = true
-                    Toast.makeText(
-                        requireContext(),
-                        getString(R.string.not_successful_response),
-                        Toast.LENGTH_LONG
-                    ).show()
-
-                    binding.contentLoadingProgressBar.isVisible = false
-                }
-                else -> {
-                }
-            }
         }
     }
 }
