@@ -1,6 +1,7 @@
 package com.shpp.eorlov.rickandmorty.ui.details
 
 import android.content.Context
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -30,6 +31,7 @@ class DetailFragment : BaseFragment() {
         (activity as MainActivity).contactComponent.inject(this)
     }
 
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -42,25 +44,17 @@ class DetailFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initCharacterData()
-        setListeners()
-        setObservers()
-    }
-
-    private fun initCharacterData() {
-        binding.character = args.characterModel
-        binding.simpleDraweeViewCharacterImage.setImageURI(args.characterModel.image)
-    }
-
-    private fun setObservers() {
-
-    }
-
-    private fun setListeners() {
-
     }
 
     override fun onResume() {
         super.onResume()
         printLog("On resume")
+
+        activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR
+    }
+
+    private fun initCharacterData() {
+        binding.character = args.characterModel
+        binding.simpleDraweeViewCharacterImage.setImageURI(args.characterModel.image)
     }
 }

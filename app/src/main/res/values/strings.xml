@@ -3,7 +3,8 @@
     <string name="internet_error">Internet error! Check your Internet connection!</string>
     <string name="unexpected_response">Something went wrong: unexpected response!</string>
     <string name="not_successful_response">Response is not successful</string>
-    <string name="initialize_data_error">Inititalize data error!</string>
+    <string name="initialize_data_error">Initialize data error!</string>
     <string name="sort_by_name">Sort by name</string>
     <string name="sorted">Sorted!</string>
+    <string name="are_you_sure">Are you sure you want to exit?</string>
 </resources>

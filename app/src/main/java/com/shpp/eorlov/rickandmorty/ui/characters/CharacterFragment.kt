@@ -1,13 +1,18 @@
 package com.shpp.eorlov.rickandmorty.ui.characters
 
 import android.content.Context
+import android.content.pm.ActivityInfo
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import com.shpp.eorlov.rickandmorty.R
 import com.shpp.eorlov.rickandmorty.base.BaseFragment
 import com.shpp.eorlov.rickandmorty.databinding.FragmentCharacterBinding
@@ -16,6 +21,7 @@ import com.shpp.eorlov.rickandmorty.ui.MainActivity
 import com.shpp.eorlov.rickandmorty.ui.characters.adapter.CharactersGridAdapter
 import com.shpp.eorlov.rickandmorty.ui.characters.adapter.listeners.CharacterClickListener
 import com.shpp.eorlov.rickandmorty.ui.details.DetailFragmentArgs
+import com.shpp.eorlov.rickandmorty.utils.Constants
 import javax.inject.Inject
 
 
@@ -52,15 +58,40 @@ class CharacterFragment : BaseFragment(), CharacterClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.setCharactersList(args.charactersArray.toMutableList())
         setObservers()
         setListeners()
         initRecycler()
+        initData()
+    }
+
+    private fun initData() {
+        if (viewModel.charactersListLiveData.value?.isEmpty() == true) {
+            viewModel.setCharactersList(args.charactersArray.toMutableList())
+        }
     }
 
     override fun onResume() {
         super.onResume()
         printLog("On resume")
+
+        activity?.onBackPressedDispatcher?.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                showAreYouSureDialog()
+            }
+        })
+
+        activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR
+    }
+
+
+    private fun showAreYouSureDialog() {
+        Snackbar.make(
+            binding.root,
+            getString(R.string.are_you_sure),
+            Snackbar.LENGTH_LONG
+        ).setAction("Yes") {
+            requireActivity().finish()
+        }.show()
     }
 
     override fun goToDetailView(characterModel: CharacterModel) {
@@ -71,38 +102,32 @@ class CharacterFragment : BaseFragment(), CharacterClickListener {
 
     private fun setListeners() {
         binding.buttonSortCharacters.setOnClickListener {
-            val sortedCharacters = getSortedCharacters(charactersGridAdapter.currentList)
+            val sortedCharacters = viewModel.getSortedCharacters(charactersGridAdapter.currentList)
             viewModel.charactersListLiveData.value = sortedCharacters
 
-            binding.buttonSortCharacters.run{
-                setText(R.string.sorted)
-                isEnabled = false
-            }
+            binding.buttonSortCharacters.visibility = View.GONE
+
+            Toast.makeText(
+                requireContext(),
+                R.string.sorted,
+                Toast.LENGTH_LONG
+            ).show()
         }
     }
-
-    private fun getSortedCharacters(currentList: List<CharacterModel>): MutableList<CharacterModel> {
-        val listOfNames: List<String> = currentList.map {
-            it.name
-        }
-
-        val sortedListOfNames = listOfNames.sorted()
-        val sortedListOfCharacters = mutableListOf<CharacterModel>()
-        for (value in sortedListOfNames) {
-            sortedListOfCharacters.add(currentList.first {
-                it.name == value
-            })
-        }
-
-        return sortedListOfCharacters
-    }
-
 
     private fun initRecycler() {
+
+        val orientation = this.resources.configuration.orientation
+        val spanCount = if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+            Constants.SPAN_COUNT_PORTRAIT
+        } else {
+            Constants.SPAN_COUNT_LANDSCAPE
+        }
+
         binding.recyclerViewMyContacts.apply {
             layoutManager = GridLayoutManager(
                 requireContext(),
-                2
+                spanCount
             )
 
             adapter = charactersGridAdapter
@@ -112,6 +137,10 @@ class CharacterFragment : BaseFragment(), CharacterClickListener {
     private fun setObservers() {
         viewModel.charactersListLiveData.observe(viewLifecycleOwner) {
             charactersGridAdapter.submitList(it.toMutableList())
+        }
+
+        viewModel.sortedLiveData.observe(viewLifecycleOwner) { sorted ->
+            if (sorted) binding.buttonSortCharacters.visibility = View.GONE
         }
     }
 }

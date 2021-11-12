@@ -1,5 +1,6 @@
 package com.shpp.eorlov.rickandmorty.ui.start
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -16,6 +17,10 @@ import com.shpp.eorlov.rickandmorty.ui.MainActivity
 import com.shpp.eorlov.rickandmorty.ui.characters.CharactersViewModel
 import com.shpp.eorlov.rickandmorty.utils.Results
 import javax.inject.Inject
+import android.content.pm.ActivityInfo
+
+import android.app.Activity
+
 
 class StartFragment : BaseFragment() {
 
@@ -36,6 +41,14 @@ class StartFragment : BaseFragment() {
 
     }
 
+    @SuppressLint("SourceLockedOrientationActivity")
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        // Fragment locked in portrait screen orientation
+        activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -54,7 +67,6 @@ class StartFragment : BaseFragment() {
         super.onResume()
         printLog("On resume")
     }
-
 
     private fun setObservers() {
         viewModel.charactersListLiveData.observe(viewLifecycleOwner) {
