@@ -17,6 +17,7 @@ class StartViewModel @Inject constructor(
 ) : ViewModel() {
 
     val charactersListLiveData = MutableLiveData<MutableList<CharacterModel>>(ArrayList())
+    val loadingProgressLiveData = MutableLiveData<Int>()
     val loadEventLiveData = MutableLiveData<Results>()
 
     private var currentPage = 1
@@ -42,7 +43,8 @@ class StartViewModel @Inject constructor(
                 if (response?.isSuccessful == true && response.body() != null) {
                     val responseBody = response.body()!!
                     allCharactersList.addAll(responseBody.results)
-                    println("Process ${currentPage / responseBody.info.pages * 100}%")
+                    loadingProgressLiveData.value =
+                        (currentPage.toFloat() / responseBody.info.pages * 100).toInt()
                 } else {
                     loadEventLiveData.postValue(Results.NOT_SUCCESSFUL_RESPONSE)
                 }

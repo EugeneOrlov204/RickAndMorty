@@ -63,6 +63,10 @@ class StartFragment : BaseFragment() {
             }
         }
 
+        viewModel.loadingProgressLiveData.observe(viewLifecycleOwner) {
+            binding.progressBar.progress = it
+        }
+
         viewModel.loadEventLiveData.observe(viewLifecycleOwner) { event ->
             when (event) {
                 Results.OK -> {
