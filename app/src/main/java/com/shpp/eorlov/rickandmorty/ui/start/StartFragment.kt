@@ -2,6 +2,7 @@ package com.shpp.eorlov.rickandmorty.ui.start
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,12 +15,8 @@ import com.shpp.eorlov.rickandmorty.R
 import com.shpp.eorlov.rickandmorty.base.BaseFragment
 import com.shpp.eorlov.rickandmorty.databinding.FragmentStartBinding
 import com.shpp.eorlov.rickandmorty.ui.MainActivity
-import com.shpp.eorlov.rickandmorty.ui.characters.CharactersViewModel
 import com.shpp.eorlov.rickandmorty.utils.Results
 import javax.inject.Inject
-import android.content.pm.ActivityInfo
-
-import android.app.Activity
 
 
 class StartFragment : BaseFragment() {

@@ -13,9 +13,6 @@ class CharactersGridAdapter(
     private val characterClickListener: CharacterClickListener
 ) : ListAdapter<CharacterModel, CharactersViewHolder>(CharacterItemDiffCallback()) {
 
-    /**
-     * Create new views (invoked by the layout manager)
-     */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CharactersViewHolder {
         return CharactersViewHolder(
             TableItemCharacterBinding.inflate(
@@ -25,9 +22,6 @@ class CharactersGridAdapter(
         )
     }
 
-    /**
-     * Replace the contents of a view (invoked by the layout manager)
-     */
     override fun onBindViewHolder(holder: CharactersViewHolder, position: Int) {
         holder.bindTo(getItem(position))
     }

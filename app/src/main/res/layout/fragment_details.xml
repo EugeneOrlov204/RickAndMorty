@@ -17,7 +17,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:background="#D5B2A4">
 
             <com.facebook.drawee.view.SimpleDraweeView
@@ -38,7 +38,7 @@
                 android:id="@+id/textViewName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="20dp"
+                android:layout_margin="@dimen/margin_medium"
                 android:text='@{"Name: " + character.name}'
                 android:textColor="#FFFFFF"
                 android:textSize="@dimen/textViewDetailsTextSize"
@@ -51,7 +51,7 @@
                 android:id="@+id/textViewSpecies"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="20dp"
+                android:layout_margin="@dimen/margin_medium"
                 android:text='@{"Species: " + character.species}'
                 android:textColor="#FFFFFFFF"
                 android:textSize="@dimen/textViewDetailsTextSize"
@@ -64,7 +64,7 @@
                 android:id="@+id/textViewGender"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="20dp"
+                android:layout_margin="@dimen/margin_medium"
                 android:text='@{"Gender: " + character.gender}'
                 android:textColor="#FFFFFFFF"
                 android:textSize="@dimen/textViewDetailsTextSize"
@@ -77,7 +77,7 @@
                 android:id="@+id/textViewLocation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="20dp"
+                android:layout_margin="@dimen/margin_medium"
                 android:text='@{"Location: " + character.location.name}'
                 android:textColor="#FFFFFFFF"
                 android:textSize="@dimen/textViewDetailsTextSize"
@@ -90,7 +90,7 @@
                 android:id="@+id/textViewOrigin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="20dp"
+                android:layout_margin="@dimen/margin_medium"
                 android:text='@{"Origin: " + character.origin.name}'
                 android:textColor="#FFFFFFFF"
                 android:textSize="@dimen/textViewDetailsTextSize"
@@ -103,8 +103,7 @@
                 android:id="@+id/textViewStatus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="20dp"
-                android:layout_marginStart="20dp"
+                android:layout_margin="@dimen/margin_medium"
                 android:text='@{"Status: " + character.status}'
                 android:textColor="#FFFFFFFF"
                 android:textSize="@dimen/textViewDetailsTextSize"

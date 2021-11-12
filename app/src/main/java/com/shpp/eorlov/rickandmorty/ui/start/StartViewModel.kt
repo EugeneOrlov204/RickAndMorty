@@ -4,13 +4,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.shpp.eorlov.rickandmorty.model.CharacterModel
-import com.shpp.eorlov.rickandmorty.model.CharactersListModel
 import com.shpp.eorlov.rickandmorty.retrofit.RestClient
 import com.shpp.eorlov.rickandmorty.utils.Results
+import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
 import javax.inject.Inject
-import kotlinx.coroutines.launch
 
 class StartViewModel @Inject constructor(
     private val client: RestClient
