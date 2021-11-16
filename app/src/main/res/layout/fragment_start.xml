@@ -13,10 +13,10 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/imageViewBackgroundImage"
-            android:scaleType="fitXY"
+            android:scaleType="centerCrop"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:src="@drawable/rick_and_morty"
+            android:src="@drawable/rick_and_morty_200dpi"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
